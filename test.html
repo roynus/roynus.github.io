@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Flirten Raderen</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+        #container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .wheel-container {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+        }
+        canvas {
+            border: 8px solid #ccc;
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .pointer {
+            position: absolute;
+            top: 45%;
+            left: 90%;
+            transform: translateY(-50%) rotate(0deg);
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 30px solid black;
+        }
+        .selected {
+            font-size: 18px;
+            margin-top: 10px;
+            width: 300px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <canvas id="wheel1" width="300" height="300"></canvas>
+        <div id="selected1" class="selected"></div>
+    </div>
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <canvas id="wheel2" width="300" height="300"></canvas>
+        <div id="selected2" class="selected"></div>
+    </div>
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <canvas id="wheel3" width="300" height="300"></canvas>
+        <div id="selected3" class="selected"></div>
+    </div>
+</div>
+
+<script>
+    const opties1 = [
+        "Een knappe onbekende", "Een goede vriend(in) (a) (b)", "Je liefje (a) (b)", "Iemand op wie je al een tijd een oogje hebt (a) (b)", 
+        "Een klasgenoot (a) (b)", "Iemand die je één keer in real life hebt gezien", "Iemand die je online hebt ontmoet", 
+        "Een vriend van een vriend", "Een oud klasgenoot", "Een bekende van een feestje (a) (b)", "Iemand die 5 jaar ouder is dan jij (a) (b)"
+    ];
+    const opties2 = [
+        "Geeft je een compliment over je billen", "Stuurt je een flirtende emoji", "Vraagt om een persoonlijke foto", 
+        "Maakt een seksuele opmerking in een bericht", "Begint ongevraagd een videochat", "Stuurt je ongevraagd een intieme foto", 
+        "Vraagt je om te videochatten in een privé-omgeving", "Begint een gesprek over persoonlijke onderwerpen", 
+        "Stuurt je een uitnodiging voor een online date", "Stuurt je een hartje of kusje in een bericht", 
+        "Vraagt om af te spreken", "Stuurt een screenshot door naar vrienden (a)", "Laat vrienden meekijken (b)",
+        "Vraagt je wachtwoorden van je sociale media account", "Vraagt jou om intieme foto’s die je van iemand anders hebt ontvangen (d)",
+        "Blijft je berichten sturen terwijl je niet reageert"
+    ];
+    const opties3 = [
+        "Tijdens het gamen", "Tijdens een chat op sociale media", "Na een online les", "Tijdens een late-night chat", 
+        "Na het toevoegen op een dating app", "Tijdens een groepsvideocall", "Tijdens het scrollen door je feed", 
+        "Na een korte online chat", "Van jullie privé gesprek (a)", "Met jullie privé gesprek (b)", 
+        "Van een intieme foto die je in vertrouwen hebt gestuurd (a)", "Naar een intieme foto die je in vertrouwen hebt gestuurd (b)",
+        "Door te sturen (d)"
+    ];
+
+    let selectedOption1 = null;
+    let selectedOption2 = null;
+    let retryCount = 0;
+
+    function createWheel(canvasId, selectedId, opties, wheelNumber) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        const center = canvas.width / 2;
+        const radius = canvas.width / 2;
+        const arcSize = (2 * Math.PI) / opties.length;
+        let angle = 0;
+        let selectedText = "";
+
+        function drawWheel() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            opties.forEach((optie, i) => {
+                const startAngle = angle + i * arcSize;
+                const endAngle = startAngle + arcSize;
+                ctx.beginPath();
+                ctx.moveTo(center, center);
+                ctx.arc(center, center, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = i % 2 === 0 ? '#FFB6C1' : '#FF69B4';
+                ctx.fill();
+                ctx.stroke();
+                ctx.save();
+                ctx.translate(center, center);
+                ctx.rotate(startAngle + arcSize / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.font = 'bold 12px Arial';
+                const text = optie.replace(/\(a\)|\(b\)|\(d\)/g, '').trim();
+                const textLines = splitText(ctx, text, radius - 20);
+                textLines.forEach((line, index) => {
+                    ctx.fillText(line, radius - 10, 10 + index * 12);
+                });
+                ctx.restore();
+            });
+        }
+
+        function splitText(ctx, text, maxWidth) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const width = ctx.measureText(currentLine + ' ' + word).width;
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        function spinWheel() {
+            const duration = retryCount > 0 ? 1 : 1000; // Shorter duration for retries
+            const startTime = performance.now();
+            const initialAngle = angle;
+            const finalAngle = initialAngle + 10 * 2 * Math.PI + Math.random() * 2 * Math.PI;
+
+            function animate(now) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                angle = initialAngle + (finalAngle - initialAngle) * easeOut(progress);
+                drawWheel();
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    displayResult();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        function easeOut(t) {
+            return t * (2 - t);
+        }
+
+        function isValidOption(option, selectedOption, wheelNumber) {
+            if (wheelNumber === 2) {
+                if (!selectedOption.includes("(a)") && !selectedOption.includes("(b)") && (option.includes("(a)") || option.includes("(b)"))) {
+                    return false;
+                }
+            } else if (wheelNumber === 3) {
+                if (selectedOption.includes("(a)") && !option.includes("(a)")) {
+                    return false;
+                } else if (selectedOption.includes("(b)") && !option.includes("(b)")) {
+                    return false;
+                } else if (!selectedOption.includes("(a)") && !selectedOption.includes("(b)") && (option.includes("(a)") || option.includes("(b)"))) {
+                    return false;
+                } else if (selectedOption.includes("(d)") && !option.includes("(d)")) {
+                    return false;
+                } else if (!selectedOption.includes("(d)") && option.includes("(d)")) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function displayResult() {
+            const selectedIndex = Math.floor((angle % (2 * Math.PI)) / arcSize);
+            const selectedOption = opties[(opties.length - 1 - selectedIndex) % opties.length];
+
+            if (wheelNumber === 1) {
+                selectedOption1 = selectedOption;
+                selectedText = selectedOption.replace(/\(a\)|\(b\)|\(d\)/g, '').trim();
+                retryCount = 0;
+                document.getElementById(selectedId).textContent = selectedText;
+            } else if (wheelNumber === 2) {
+                if (selectedOption1 && isValidOption(selectedOption, selectedOption1, wheelNumber)) {
+                    selectedOption2 = selectedOption;
+                    selectedText = selectedOption.replace(/\(a\)|\(b\)|\(d\)/g, '').trim();
+                    retryCount = 0;
+                    document.getElementById(selectedId).textContent = selectedText;
+                } else {
+                    retryCount++;
+                    spinWheel(); // Spin again if invalid combination
+                }
+            } else if (wheelNumber === 3) {
+                if (selectedOption2 && isValidOption(selectedOption, selectedOption2, wheelNumber)) {
+                    selectedText = selectedOption.replace(/\(a\)|\(b\)|\(d\)/g, '').trim();
+                    retryCount = 0;
+                    document.getElementById(selectedId).textContent = selectedText;
+                } else {
+                    retryCount++;
+                    spinWheel(); // Spin again if invalid combination
+                }
+            }
+            drawWheel();
+        }
+
+        canvas.addEventListener('click', () => {
+            retryCount = 0;
+            spinWheel();
+        });
+
+        drawWheel();
+    }
+
+    createWheel('wheel1', 'selected1', opties1, 1);
+    createWheel('wheel2', 'selected2', opties2, 2);
+    createWheel('wheel3', 'selected3', opties3, 3);
+</script>
+
+</body>
+</html>
