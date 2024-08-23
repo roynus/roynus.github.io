@@ -216,10 +216,12 @@
     <script>
         let currentImage = 1;
 
-        function openViewer() {
-            document.getElementById('viewer').style.display = 'flex';
-            showImage(currentImage);
-        }
+function openViewer() {
+    setTimeout(function() {
+        document.getElementById('viewer').style.display = 'flex';
+        showImage(currentImage);
+    }, 700);
+}
 
         function closeViewer() {
             document.getElementById('viewer').style.display = 'none';
