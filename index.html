@@ -9,6 +9,7 @@
     <style>
         body {
             background: #323641;
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
@@ -26,7 +27,7 @@
 
         .animated-mail {
             position: absolute;
-            height: 100px;
+            height: 112.5px;
             width: 150px;
             transition: 0.4s;
         }
@@ -44,11 +45,11 @@
 
         .animated-mail .top-fold {
             position: absolute;
-            top: 30px;
+            top: 37.5px;
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 40px 75px 0 75px;
+            border-width: 37.5px 75px 0 75px;
             transform-origin: 50% 0%;
             transition: transform 0.4s 0.4s, z-index 0.2s 0.4s;
             border-color: #7a4d30 transparent transparent transparent;
@@ -70,7 +71,7 @@
             width: 0;
             height: 0;
             border-style: solid;
-            border-width: 40px 0 40px 75px;
+            border-width: 37.5px 0 37.5px 75px;
             border-color: transparent transparent transparent #84583b;
             z-index: 2;
         }
@@ -97,8 +98,8 @@
             position: absolute;
             top: 150px;
             left: 50%;
-            width: 250px;
-            height: 20px;
+            width: 300px;
+            height: 22.5px;
             transition: 0.4s;
             transform: translateX(-50%);
             border-radius: 100%;
@@ -106,7 +107,7 @@
         }
 
         .letter-image:hover .animated-mail {
-            transform: translateY(35px);
+            transform: translateY(37.5px);
         }
 
         .letter-image:hover .animated-mail .top-fold {
@@ -120,7 +121,7 @@
         }
 
         .letter-image:hover .shadow {
-            width: 200px;
+            width: 187.5px;
         }
 
         /* Fullscreen viewer styles */
@@ -173,7 +174,7 @@
             padding: 10px 20px;
             text-decoration: none;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
             transition: background-color 0.3s;
         }
 
@@ -215,12 +216,10 @@
     <script>
         let currentImage = 1;
 
-function openViewer() {
-    setTimeout(function() {
-        document.getElementById('viewer').style.display = 'flex';
-        showImage(currentImage);
-    }, 500); // 1000 milliseconds = 1 second
-}
+        function openViewer() {
+            document.getElementById('viewer').style.display = 'flex';
+            showImage(currentImage);
+        }
 
         function closeViewer() {
             document.getElementById('viewer').style.display = 'none';
