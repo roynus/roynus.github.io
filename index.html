@@ -213,15 +213,19 @@
         <a href="3.pdf" download class="download-button">Download PDF</a>
     </div>
 
+    <!-- Audio element -->
+    <audio id="opening-sound" src="opening-sound.mp3"></audio>
+
     <script>
         let currentImage = 1;
 
-function openViewer() {
-    setTimeout(function() {
-        document.getElementById('viewer').style.display = 'flex';
-        showImage(currentImage);
-    }, 600);
-}
+        function openViewer() {
+            document.getElementById('opening-sound').play(); // Start audio
+            setTimeout(function() {
+                document.getElementById('viewer').style.display = 'flex';
+                showImage(currentImage);
+            }, 600);
+        }
 
         function closeViewer() {
             document.getElementById('viewer').style.display = 'none';
