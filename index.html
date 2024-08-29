@@ -14,9 +14,276 @@ body {
     background-position: center;
     display: flex;
     align-items: center;
+    overflow: hidden;
     height: 100vh;
     margin: 0;
-    padding: 0 0 0 0;
+    padding: 0 0 0 0;<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opening Envelope with Image Viewer and Download</title>
+    <style>
+body {
+    background-image: url('jouw-afbeelding.jpg'); /* Vervang 'jouw-afbeelding.jpg' door het pad naar jouw afbeelding */
+    background-size: contain; /* Zorgt ervoor dat de hele afbeelding zichtbaar is */
+    background-repeat: no-repeat; /* Voorkomt dat de afbeelding wordt herhaald */
+    
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+        .letter-image {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            cursor: pointer;
+        }
+
+        .animated-mail {
+            position: absolute;
+            height: 112.5px;
+            width: 150px;
+            transition: 0.4s;
+        }
+
+        .animated-mail .body {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 75px 150px;
+            border-color: transparent transparent #84583b transparent;
+            z-index: 2;
+        }
+
+        .animated-mail .top-fold {
+            position: absolute;
+            top: 37.5px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 37.5px 75px 0 75px;
+            transform-origin: 50% 0%;
+            transition: transform 0.4s 0.4s, z-index 0.2s 0.4s;
+            border-color: #7a4d30 transparent transparent transparent;
+            z-index: 2;
+        }
+
+        .animated-mail .back-fold {
+            position: absolute;
+            bottom: 0;
+            width: 150px;
+            height: 75px;
+            background: #c19a6b;
+            z-index: 0;
+        }
+
+        .animated-mail .left-fold {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 37.5px 0 37.5px 75px;
+            border-color: transparent transparent transparent #84583b;
+            z-index: 2;
+        }
+
+        .animated-mail .letter {
+            left: 15px;
+            bottom: 0;
+            position: absolute;
+            width: 120px;
+            height: 45px;
+            background: white;
+            z-index: 1;
+            overflow: hidden;
+            transition: 0.4s 0.2s;
+        }
+
+        .animated-mail .letter img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .shadow {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            width: 300px;
+            height: 22.5px;
+            transition: 0.4s;
+            transform: translateX(-50%);
+            border-radius: 100%;
+            background: radial-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
+        }
+
+        .letter-image:hover .animated-mail {
+            transform: translateY(37.5px);
+        }
+
+        .letter-image:hover .animated-mail .top-fold {
+            transition: transform 0.4s, z-index 0.2s;
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        .letter-image:hover .animated-mail .letter {
+            height: 180px;
+        }
+
+        .letter-image:hover .shadow {
+            width: 187.5px;
+        }
+
+        /* Fullscreen viewer styles */
+        .viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .viewer img {
+            max-width: 90%;
+            max-height: 90%;
+            display: none;
+        }
+
+        .viewer img.active {
+            display: block;
+        }
+
+        .viewer .navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .viewer .navigation button {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            color: black;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .download-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            color: black;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="letter-image" onclick="openViewer()">
+        <div class="animated-mail">
+            <div class="back-fold"></div>
+            <div class="letter">
+                <img src="1.JPG" alt="Image inside envelope">
+            </div>
+            <div class="top-fold"></div>
+            <div class="body"></div>
+            <div class="left-fold"></div>
+        </div>
+        <div class="shadow"></div>
+    </div>
+
+    <!-- Fullscreen Image Viewer -->
+    <div class="viewer" id="viewer">
+        <div class="content" id="content">
+            <img src="1.JPG" id="image1" class="active" alt="Afbeelding 1">
+            <img src="2.JPG" id="image2" alt="Afbeelding 2">
+            <img src="3.JPG" id="image3" alt="Afbeelding 3">
+        </div>
+        <div class="navigation">
+            <button onclick="prevImage()">&#9664;</button>
+            <button onclick="nextImage()">&#9654;</button>
+        </div>
+        <!-- Download Button -->
+        <a href="3.pdf" download class="download-button">Download PDF</a>
+    </div>
+
+    <!-- Audio element -->
+    <audio id="opening-sound" src="opening-sound.mp3"></audio>
+
+    <script>
+        let currentImage = 1;
+
+        function openViewer() {
+            document.getElementById('opening-sound').play(); // Start audio
+            setTimeout(function() {
+                document.getElementById('viewer').style.display = 'flex';
+                showImage(currentImage);
+            }, 600);
+        }
+
+        function closeViewer() {
+            document.getElementById('viewer').style.display = 'none';
+        }
+
+        function showImage(index) {
+            const images = document.querySelectorAll('.viewer img');
+            images.forEach((img, i) => {
+                img.classList.toggle('active', i === index - 1);
+            });
+        }
+
+        function nextImage() {
+            const totalImages = 3;
+            currentImage = (currentImage % totalImages) + 1;
+            showImage(currentImage);
+        }
+
+        function prevImage() {
+            const totalImages = 3;
+            currentImage = (currentImage - 2 + totalImages) % totalImages + 1;
+            showImage(currentImage);
+        }
+
+        // Close viewer when clicking outside the image
+        document.getElementById('viewer').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeViewer();
+            }
+        });
+
+        // Initial setup
+        showImage(currentImage);
+    </script>
+</body>
+
+</html>
     overflow: hidden; /* Voorkomt scrollen */
     flex-direction: column; /* Maakt de inhoud verticaal georiënteerd */
     justify-content: flex-end; /* Plaatst de inhoud meer naar boven */
