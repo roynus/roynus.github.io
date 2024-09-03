@@ -233,9 +233,12 @@ body {
             }, 600);
         }
 
-        function closeViewer() {
-            document.getElementById('viewer').style.display = 'none';
-        }
+function closeViewer() {
+    document.getElementById('viewer').style.display = 'none';
+    const audio = document.getElementById('opening-sound');
+    audio.pause(); // Pause the audio
+    audio.currentTime = 0; // Optional: Reset the audio to the beginning
+}
 
         function showImage(index) {
             const images = document.querySelectorAll('.viewer img');
