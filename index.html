@@ -143,13 +143,16 @@ body {
             z-index: 999;
         }
 
-        .viewer img {
-            max-width: 90%;
-            max-height: 90%;
-            display: none;
-            transform: scale(1.2); /* Adjust this value to zoom in */
-            transition: transform 0.3s; /* Optional: adds a smooth zoom effect */
-        }
+.viewer img {
+    max-width: 90%;
+    max-height: 90%;
+    display: none;
+    object-fit: contain; /* Ensures images are contained within set dimensions */
+    width: 600px; /* Set desired width */
+    height: 400px; /* Set desired height */
+    transform: scale(1.2); /* Adjust this value to zoom in */
+    transition: transform 0.3s; /* Optional: adds a smooth zoom effect */
+}
 
         .viewer img.active {
             display: block;
