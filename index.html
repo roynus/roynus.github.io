@@ -226,12 +226,14 @@ body {
     <script>
         let currentImage = 1;
 
+        window.onload = function () {
+            // Start audio when the page loads
+            document.getElementById('opening-sound').play();
+        };
+
         function openViewer() {
-            document.getElementById('opening-sound').play(); // Start audio
-            setTimeout(function() {
-                document.getElementById('viewer').style.display = 'flex';
-                showImage(currentImage);
-            }, 600);
+            document.getElementById('viewer').style.display = 'flex';
+            showImage(currentImage);
         }
 
         function closeViewer() {
@@ -257,14 +259,12 @@ body {
             showImage(currentImage);
         }
 
-        // Close viewer when clicking outside the image
-        document.getElementById('viewer').addEventListener('click', function(e) {
+        document.getElementById('viewer').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeViewer();
             }
         });
 
-        // Initial setup
         showImage(currentImage);
     </script>
 </body>
