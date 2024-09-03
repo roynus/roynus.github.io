@@ -28,6 +28,7 @@ body {
             margin-top: 260px; /* Moves the envelope down */
             margin-left: 20px; /* Moves the envelope to the right */
         }
+        
 
         .animated-mail {
             position: absolute;
@@ -146,6 +147,8 @@ body {
             max-width: 90%;
             max-height: 90%;
             display: none;
+            transform: scale(1.2); /* Adjust this value to zoom in */
+            transition: transform 0.3s; /* Optional: adds a smooth zoom effect */
         }
 
         .viewer img.active {
