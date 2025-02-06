@@ -6,39 +6,39 @@
     <title>Soepel Fade Effect - Danspaar</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url('background.png') no-repeat center center;
-    background-size: cover; /* Houdt de achtergrond in verhouding */
-    overflow: hidden;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('background.png') no-repeat center center;
+            background-size: cover; /* Houdt de achtergrond in verhouding */
+            overflow: hidden;
+        }
 
-.image-container {
-    position: absolute;
-    width: clamp(150px, 40vw, 300px); /* Dynamische breedte */
-    max-height: 40vh; /* Voorkomt dat de afbeelding te groot wordt */
-    aspect-ratio: 185 / 379; /* Houdt de verhouding vast */
-    bottom: 0vh;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        .image-container {
+            position: absolute;
+            width: clamp(100px, 40vw, 200px); /* Dynamische breedte */
+            max-height: 45vh; /* Voorkomt dat de afbeelding te groot wordt */
+            aspect-ratio: 185 / 379; /* Houdt de verhouding vast */
+            bottom: 0vh;
+            left: 50%;
+            transform: translateX(-50%);
+        }
 
 
 
-/* Zorgt dat de afbeeldingen netjes overlappen en vloeiend wisselen */
-.image-container img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: opacity 6s ease-in-out;
-}
+            /* Zorgt dat de afbeeldingen netjes overlappen en vloeiend wisselen */
+            .image-container img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                transition: opacity 6s ease-in-out;
+            }
 
 
 
@@ -48,7 +48,7 @@ body, html {
             width: 100%;
             bottom: 0px;
             text-align: center;
-    font-size: clamp(14px, 4vw, 20px); /* Dynamische lettergrootte */
+            font-size: clamp(14px, 4vw, 20px); /* Dynamische lettergrootte */
             font-weight: bold;
             color: white;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -70,38 +70,38 @@ body, html {
 </head>
 <body>
 
-<div class="image-container">
-    <div class="overlay-text text1" id="text1">SALOU 2013</div>
-    <div class="overlay-text text2" id="text2">10 JAAR LATER...</div>
+    <div class="image-container">
+        <div class="overlay-text text1" id="text1">SALOU 2013</div>
+        <div class="overlay-text text2" id="text2">10 JAAR LATER...</div>
 
-    <img id="dance1" src="dance1.jpg" alt="Danspaar 1">
-    <img id="dance2" src="dance2.jpg" alt="Danspaar 2" class="fade">
-</div>
+        <img id="dance1" src="dance1.jpg" alt="Danspaar 1">
+        <img id="dance2" src="dance2.jpg" alt="Danspaar 2" class="fade">
+    </div>
 
-<script>
-    let image1 = document.getElementById('dance1');
-    let image2 = document.getElementById('dance2');
-    let text1 = document.getElementById('text1');
-    let text2 = document.getElementById('text2');
-    let isImage1Visible = true;
+    <script>
+        let image1 = document.getElementById('dance1');
+        let image2 = document.getElementById('dance2');
+        let text1 = document.getElementById('text1');
+        let text2 = document.getElementById('text2');
+        let isImage1Visible = true;
 
-    function fadeImages() {
-        if (isImage1Visible) {
-            image1.style.opacity = "0";
-            image2.style.opacity = "1";
-            text1.style.opacity = "0";
-            text2.style.opacity = "1";
-        } else {
-            image1.style.opacity = "1";
-            image2.style.opacity = "0";
-            text1.style.opacity = "1";
-            text2.style.opacity = "0";
+        function fadeImages() {
+            if (isImage1Visible) {
+                image1.style.opacity = "0";
+                image2.style.opacity = "1";
+                text1.style.opacity = "0";
+                text2.style.opacity = "1";
+            } else {
+                image1.style.opacity = "1";
+                image2.style.opacity = "0";
+                text1.style.opacity = "1";
+                text2.style.opacity = "0";
+            }
+            isImage1Visible = !isImage1Visible;
         }
-        isImage1Visible = !isImage1Visible;
-    }
 
-    setInterval(fadeImages, 9000);
-</script>
+        setInterval(fadeImages, 9000);
+    </script>
 
 </body>
 </html>
